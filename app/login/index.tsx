@@ -4,7 +4,8 @@ import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function LoginPage() {
       const router = useRouter();
@@ -19,7 +20,7 @@ export default function LoginPage() {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.header}>
-        <FontAwesome name="star" size={24} color="#b388ff" />
+      <MaterialCommunityIcons name="star-four-points" size={32} color="#FFD700" />
         <Text style={styles.welcomeText}>Welcome back!</Text>
         <Text style={styles.subtitle}>Please log in to continue your journey to better sleep.</Text>
       </View>

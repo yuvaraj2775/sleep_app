@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons,MaterialIcons  } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 
@@ -27,8 +27,23 @@ export default function ProfileScreen() {
         route: "/profile/sleep_schedules"
       },
       {
-        icon: <MaterialIcons name="subscriptions" size={22} color="#8E8E93" />,
-        title: "Subscription",
+        icon: (
+          <View style={styles.iconWithStar}>
+        
+            <FontAwesome name="star" size={14} color="gold" style={styles.starIcon} />
+          </View>
+        ),
+        title: "Premium",
+        route: "/profile/premium"
+      },
+      {
+        icon: (
+          <View style={styles.iconWithStar}>
+            <MaterialIcons name="subscriptions" size={22} color="#8E8E93" />
+            
+          </View>
+        ),
+        title: "Premium feature",
         route: "/profile/subscription"
       },
       {
@@ -41,26 +56,10 @@ export default function ProfileScreen() {
         title: "Help & support",
         route: "/profile/help_support"
       },
-     
       {
         icon: <MaterialCommunityIcons name="logout" size={22} color="#8E8E93" />,
         title: "Log out",
         route: "/profile/logout"
-      },
-    ];
-  
-    const stats = [
-      {
-        value: "139",
-        label: "Nights",
-      },
-      {
-        value: "88",
-        label: "Quality",
-      },
-      {
-        value: "7h 10min",
-        label: "Duration",
       },
     ];
   
@@ -78,20 +77,11 @@ export default function ProfileScreen() {
 
       <View style={styles.profileSection}>
         <Image
-          source={{ uri: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gGxKdcyQll0Gtx1GBBAmWAr15DnYCF.png" }}
+          source={{ uri: "https://images.unsplash.com/photo-1618641986557-1ecd230959aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHx8Mg%3D%3D" }}
           style={styles.profileImage}
         />
         <Text style={styles.name}>Maria</Text>
         <Text style={styles.email}>maria.silvachenko@gmail.com</Text>
-        
-        <View style={styles.statsContainer}>
-          {stats.map((stat, index) => (
-            <View key={index} style={styles.statItem}>
-              <Text style={styles.statValue}>{stat.value}</Text>
-              <Text style={styles.statLabel}>{stat.label}</Text>
-            </View>
-          ))}
-        </View>
       </View>
 
       <View style={styles.menuContainer}>
@@ -152,25 +142,6 @@ const styles = StyleSheet.create({
     color: '#8E8E93',
     marginBottom: 24,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    paddingHorizontal: 32,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#8E8E93',
-  },
   menuContainer: {
     marginTop: 24,
   },
@@ -195,4 +166,12 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 12,
   },
+  iconWithStar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  starIcon: {
+    marginLeft: 4,
+  },
 });
+

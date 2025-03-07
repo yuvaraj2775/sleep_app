@@ -53,7 +53,7 @@ export default function PersonalInformationScreen({ navigation }) {
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="white" />
-          <Text style={styles.backText}>Back</Text>
+          <Text style={styles.backText}></Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Personal Information</Text>
       </View>
@@ -61,7 +61,7 @@ export default function PersonalInformationScreen({ navigation }) {
       <View style={styles.content}>
         <View style={styles.profileImageContainer}>
           <Image
-            source={{ uri: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cOShI9eSbfwv2pdWeUyp7f1vKcvzBA.png" }}
+            source={{ uri: "https://images.unsplash.com/photo-1618641986557-1ecd230959aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHx8Mg%3D%3D" }}
             style={styles.profileImage}
           />
           <TouchableOpacity style={styles.cameraButton}>

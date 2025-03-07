@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, Stat
 import { MaterialCommunityIcons, Ionicons, FontAwesome5, Feather } from "@expo/vector-icons"
 import CompletionAnimation from "../completion-animation"
 import SignUpScreen from "../signup"
+import { question } from '../../data'
 
 type AgeGroup = "teen" | "young-adult" | "working" | "elderly" | null
 
@@ -67,10 +68,25 @@ export default function App() {
     return null
   }
 
-  const handleAgeSelection = (age: string) => {
-    const ageNum = Number.parseInt(age)
-    const ageGroup = determineAgeGroup(ageNum)
-    setAnswers({ ...answers, age, ageGroup })
+  const handleAgeSelection = (ageGroup: string) => {
+    let ageGroupType: AgeGroup;
+    switch (ageGroup) {
+      case "12-18":
+        ageGroupType = "teen";
+        break;
+      case "18-25":
+        ageGroupType = "young-adult";
+        break;
+      case "25-50":
+        ageGroupType = "working";
+        break;
+      case "50+":
+        ageGroupType = "elderly";
+        break;
+      default:
+        ageGroupType = null;
+    }
+    setAnswers({ ...answers, age: ageGroup, ageGroup: ageGroupType });
   }
 
   const handleNext = () => {
@@ -116,189 +132,32 @@ export default function App() {
   }
 
   const renderAgeOptions = () => {
-    const ages = Array.from({ length: 49 }, (_, i) => i + 12) // Ages 12-60
+    const ageGroups = ["12-18 years", "18-25 years", "25-50 years", "50+ years"];
     return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.ageScroller}>
-        {ages.map((age) => (
+      <View style={styles.ageContainer}>
+        {ageGroups.map((ageGroup) => (
           <TouchableOpacity
-            key={age}
-            style={[styles.ageButton, answers.age === age.toString() && styles.ageButtonSelected]}
-            onPress={() => handleAgeSelection(age.toString())}
+            key={ageGroup}
+            style={[
+              styles.ageButton,
+              answers.age === ageGroup && styles.ageButtonSelected
+            ]}
+            onPress={() => handleAgeSelection(ageGroup)}
           >
-            <Text style={[styles.ageButtonText, answers.age === age.toString() && styles.ageButtonTextSelected]}>
-              {age}
+            <Text style={[
+              styles.ageButtonText,
+              answers.age === ageGroup && styles.ageButtonTextSelected
+            ]}>
+              {ageGroup}
             </Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
-    )
+      </View>
+    );
   }
 
   const getAgeSpecificQuestions = (): Question[] => {
-    const questions = {
-      teen: [
-        {
-          id: 1,
-          question: "What time do you usually go to bed?",
-          options: ["Before 9 PM", "9 PM - 10 PM", "10 PM - 11 PM", "After 11 PM"],
-          key: "bedtime",
-          icon: <Ionicons name="bed-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 2,
-          question: "Do you wake up feeling refreshed?",
-          options: ["Always", "Most of the time", "Sometimes", "Rarely"],
-          key: "refreshed",
-          icon: <Ionicons name="sunny-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 3,
-          question: "Do you use your phone or watch TV before bed?",
-          options: ["Every night", "Most nights", "Occasionally", "Never"],
-          key: "screenTime",
-          icon: <MaterialCommunityIcons name="cellphone" size={24} color="#b388ff" />
-        },
-        {
-          id: 4,
-          question: "Do you feel stressed or anxious before sleep?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "stressAnxiety",
-          icon: <Ionicons name="warning-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 5,
-          question: "Did you finish your homework before bed?",
-          options: ["Always", "Most of the time", "Sometimes", "Rarely"],
-          key: "homework",
-          icon: <Ionicons name="book-outline" size={24} color="#b388ff" />
-        },
-      ],
-      working: [
-        {
-          id: 1,
-          question: "Does your work cause you stress?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "workStress",
-          icon: <MaterialCommunityIcons name="briefcase-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 2,
-          question: "Do you travel/commute extensively daily?",
-          options: ["More than 2 hours", "1-2 hours", "Less than 1 hour", "Minimal travel"],
-          key: "travelHabits",
-          icon: <MaterialCommunityIcons name="car" size={24} color="#b388ff" />
-        },
-        {
-          id: 3,
-          question: "Do you feel sleepy throughout the day?",
-          options: ["Always", "Often", "Sometimes", "Rarely"],
-          key: "dayTimeSleepiness",
-          icon: <Ionicons name="sunny-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 4,
-          question: "Do you have an irregular sleep schedule?",
-          options: ["Very irregular", "Somewhat irregular", "Mostly regular", "Regular"],
-          key: "irregularSleep",
-          icon: <MaterialCommunityIcons name="calendar-clock" size={24} color="#b388ff" />
-        },
-        {
-          id: 5,
-          question: "Do you wake up multiple times at night?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "nightWaking",
-          icon: <Ionicons name="alarm-outline" size={24} color="#b388ff" />
-        },
-      ],
-      "young-adult": [
-        {
-          id: 1,
-          question: "Does any fear or anxiety prevent you from sleeping?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "sleepFears",
-          icon: <Ionicons name="warning-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 2,
-          question: "Do you play mobile/PC games at midnight?",
-          options: ["Every night", "Often", "Sometimes", "Never"],
-          key: "lateNightGaming",
-          icon: <Ionicons name="game-controller-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 3,
-          question: "Do you have late night conversations with friends?",
-          options: ["Every night", "Often", "Sometimes", "Never"],
-          key: "lateNightConversations",
-          icon: <Ionicons name="chatbubble-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 4,
-          question: "Do you go out at midnight?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "midnightOutings",
-          icon: <Feather name="moon" size={24} color="#b388ff" />
-        },
-        {
-          id: 5,
-          question: "Do you exercise/play sports during night time?",
-          options: ["Regularly", "Sometimes", "Rarely", "Never"],
-          key: "nightExercise",
-          icon: <FontAwesome5 name="running" size={24} color="#b388ff" />
-        },
-        {
-          id: 6,
-          question: "Are you feeling depressed about your life?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "depression",
-          icon: <Ionicons name="sad-outline" size={24} color="#b388ff" />
-        },
-      ],
-      elderly: [
-        {
-          id: 1,
-          question: "Does any medication affect your sleep?",
-          options: ["Significantly", "Moderately", "Slightly", "Not at all"],
-          key: "medications",
-          icon: <Ionicons name="medical-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 2,
-          question: "Do you wake up multiple times during night?",
-          options: ["Very often", "Sometimes", "Rarely", "Never"],
-          key: "nightWaking",
-          icon: <Ionicons name="alarm-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 3,
-          question: "Do you feel well rested when you wake up?",
-          options: ["Always", "Usually", "Sometimes", "Rarely"],
-          key: "restfulness",
-          icon: <Ionicons name="sunny-outline" size={24} color="#b388ff" />
-        },
-        {
-          id: 4,
-          question: "Do you follow a nighttime routine to help you sleep?",
-          options: ["Always", "Usually", "Sometimes", "Never"],
-          key: "nightRoutine",
-          icon: <MaterialCommunityIcons name="sleep" size={24} color="#b388ff" />
-        },
-        {
-          id: 5,
-          question: "Do you experience joint pains?",
-          options: ["Severe", "Moderate", "Mild", "None"],
-          key: "jointPains",
-          icon: <MaterialCommunityIcons name="bone" size={24} color="#b388ff" />
-        },
-        {
-          id: 6,
-          question: "Do you do any physical activity before bed?",
-          options: ["Regular activity", "Light activity", "Rarely", "Never"],
-          key: "eveningActivity",
-          icon: <FontAwesome5 name="walking" size={24} color="#b388ff" />
-        },
-      ],
-    }
+    const questions=question
 
     if (!answers.ageGroup || !questions[answers.ageGroup]) return []
     return questions[answers.ageGroup]
@@ -316,21 +175,9 @@ export default function App() {
 
     return (
       <View style={styles.questionContainer}>
-        <View style={styles.questionHeader}>
-          <Text style={styles.title}>Age-Specific Questions</Text>
-          <View style={styles.progressIndicator}>
-            {questions.map((q, index) => (
-              <View 
-                key={index} 
-                style={[
-                  styles.progressDot, 
-                  index === questionIndex ? styles.progressDotActive : 
-                  index < questionIndex ? styles.progressDotCompleted : null
-                ]} 
-              />
-            ))}
-          </View>
-        </View>
+                  <View style={styles.questionHeader}>
+                  <Text style={styles.title}>Age-Specific Questions</Text>
+                  </View>
         
         <View style={styles.questionWithIcon}>
           {currentQuestionData.icon}
@@ -358,6 +205,20 @@ export default function App() {
               </Text>
             </TouchableOpacity>
           ))}
+
+          <View style={styles.progressIndicator}>
+            {questions.map((q, index) => (
+              <View 
+                key={index} 
+                style={[
+                  styles.progressDot, 
+                  index === questionIndex ? styles.progressDotActive : 
+                  index < questionIndex ? styles.progressDotCompleted : null
+                ]} 
+              />
+            ))}
+          </View>
+
         </View>
         
         <View style={styles.navigationButtons}>
@@ -917,6 +778,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: "center",
   },
+  ageContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 20,
+  },
   genderButton: {
     flex: 1,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -940,20 +807,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   ageButton: {
-    width: 60,
     height: 60,
+    marginTop:10,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 8,
-    marginRight: 8,
+    marginHorizontal: 4,
   },
   ageButtonSelected: {
     backgroundColor: "#b388ff",
   },
   ageButtonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
   },
   ageButtonTextSelected: {
@@ -974,6 +841,8 @@ const styles = StyleSheet.create({
   },
   progressIndicator: {
     flexDirection: "row",
+    alignItems:"center",
+    justifyContent:"center",
     marginTop: 12,
     gap: 8,
   },
@@ -1053,7 +922,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     flexDirection: "row",
-    
+
     alignItems: "center",
     justifyContent: "center",
     gap: 8,

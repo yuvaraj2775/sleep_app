@@ -81,7 +81,7 @@ export default function SettingsScreen() {
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="white" />
-          <Text style={styles.backText}>Back</Text>
+          <Text style={styles.backText}></Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
       </View>
